@@ -23,13 +23,73 @@
         flex: 1;
       }
     </style>
-  <link rel="icon" href="/myeonggyeong-web/favicon.ico"/></head>
+  <link rel="icon" href="/myeonggyeong-web/favicon.ico"/><style id="mg-boot-diagnostics-style">
+  /* 부팅 중 흰 화면 대신 한지색 배경 */
+  html, body { background: #f6f1e7; }
+  #mg-boot-shell { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: #857a69; font-size: 14px; }
+  #mg-boot-shell b { font-family: Georgia, serif; font-size: 34px; letter-spacing: 6px; color: #8a6a32; font-weight: 500; }
+  #mg-boot-report { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 2147483647;
+    max-width: 480px; margin: 0 auto; background: #fffcf6; border: 1px solid #b08d4c; border-radius: 16px; padding: 14px 16px;
+    font: 13px/1.55 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: #1d1a16;
+    box-shadow: 0 10px 24px rgba(59,42,16,.12); }
+  #mg-boot-report pre { white-space: pre-wrap; word-break: break-all; max-height: 30vh; overflow: auto; background: #f2ead9; padding: 8px; border-radius: 8px; font-size: 11px; margin: 8px 0; }
+  #mg-boot-report button { min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid #b08d4c; font-size: 14px; font-weight: 700; margin-right: 8px; }
+  #mg-boot-report .p { background: #1d1a16; color: #d9c194; }
+  #mg-boot-report .q { background: transparent; color: #3a342c; border-color: #e6dccb; }
+</style>
+<script id="mg-boot-diagnostics">
+(function () {
+  /* 부팅 진단 기록 (콘솔에서 window.__MG_BOOT 로 확인 가능) */
+  var B = (window.__MG_BOOT = { t0: Date.now(), errors: [], shown: false });
+  function add(m) { if (B.errors.length < 12) B.errors.push(String(m).slice(0, 400)); }
+  window.addEventListener('error', function (e) {
+    var t = e && e.target;
+    if (t && t !== window && (t.src || t.href)) add('리소스 로드 실패: ' + (t.src || t.href));
+    else add('오류: ' + ((e && e.message) || '알 수 없음') + (e && e.filename ? ' @ ' + String(e.filename).split('/').pop() + ':' + e.lineno : ''));
+  }, true);
+  window.addEventListener('unhandledrejection', function (e) {
+    var r = e && e.reason; add('Promise 거부: ' + ((r && (r.message || r)) || '알 수 없음'));
+  });
+  function state() {
+    var root = document.getElementById('root');
+    if (!root) return 'noroot';
+    if (document.getElementById('mg-boot-shell')) return 'notrendered';
+    return (root.innerText || root.textContent || '').replace(/\s+/g, '') ? 'ok' : 'empty';
+  }
+  B.state = state;
+  function report() {
+    var s = state();
+    B.lastState = s;
+    if (s === 'ok' || B.shown) return;
+    B.shown = true;
+    var box = document.createElement('div');
+    box.id = 'mg-boot-report';
+    box.setAttribute('role', 'alert');
+    var title = s === 'notrendered' ? '앱 화면을 아직 그리지 못했습니다.' : '화면이 비어 있습니다.';
+    var detail = '주소: ' + location.pathname + '\n상태: ' + s + ' · ' + Math.round((Date.now() - B.t0) / 1000) + '초\n' +
+      (B.errors.length ? B.errors.join('\n') : '기록된 오류 없음');
+    box.innerHTML = '<strong></strong><pre></pre>';
+    box.firstChild.textContent = title;
+    box.childNodes[1].textContent = detail;
+    var re = document.createElement('button'); re.className = 'p'; re.textContent = '다시 불러오기';
+    re.onclick = function () { location.reload(); };
+    var cl = document.createElement('button'); cl.className = 'q'; cl.textContent = '닫기';
+    cl.onclick = function () { box.remove(); };
+    box.appendChild(re); box.appendChild(cl);
+    document.body.appendChild(box);
+    if (window.console) console.warn('[명경 부팅 진단]', title, detail);
+  }
+  setTimeout(report, 12000);
+})();
+</script>
+</head>
 
   <body>
     <!-- Use static rendering with Expo Router to support running without JavaScript. -->
     <noscript> You need to enable JavaScript to run this app. </noscript>
     <!-- The root element for your Expo app. -->
-    <div id="root"></div>
-  <script src="/myeonggyeong-web/_expo/static/js/web/__expo-metro-runtime-8c088df87a31e4e6accd81c554ec290d.js" defer></script><script src="/myeonggyeong-web/_expo/static/js/web/__common-5bdeffb243cd1c1ba295b2154f51e2b7.js" defer></script><script src="/myeonggyeong-web/_expo/static/js/web/entry-3771c8f73091aa55800ce0f4c7f29887.js" defer></script>
+    <div id="root"><div id="mg-boot-shell" aria-live="polite"><b>明鏡</b><span>명경을 불러오는 중…</span><noscript>JavaScript 를 켜 주세요.</noscript></div></div>
+  <script src="/myeonggyeong-web/_expo/static/js/web/__expo-metro-runtime-8c088df87a31e4e6accd81c554ec290d.js" defer></script><script src="/myeonggyeong-web/_expo/static/js/web/__common-da17cd6fc421277325d7ca0b5608728b.js" defer></script><script src="/myeonggyeong-web/_expo/static/js/web/entry-3e52d8ab36725a845d627a02a787475d.js" defer></script>
 </body>
 </html>
