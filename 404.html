@@ -23,7 +23,16 @@
         flex: 1;
       }
     </style>
-  <link rel="icon" href="/myeonggyeong-web/favicon.ico"/><style id="mg-boot-diagnostics-style">
+  <link rel="icon" href="/favicon.ico"/><script id="mg-legacy-path">
+(function () {
+  var P = '/myeonggyeong-web', p = location.pathname;
+  if (p !== P && p.indexOf(P + '/') !== 0) return;
+  /* 앞의 슬래시를 하나로 → '//다른사이트' 같은 주소가 만들어지지 않음 */
+  var n = '/' + p.slice(P.length).replace(/^\/+/, '');
+  try { history.replaceState(history.state, '', n + location.search + location.hash); } catch (e) {}
+})();
+</script>
+<style id="mg-boot-diagnostics-style">
   /* 부팅 중 흰 화면 대신 한지색 배경 */
   html, body { background: #f6f1e7; }
   #mg-boot-shell { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
@@ -90,6 +99,6 @@
     <noscript> You need to enable JavaScript to run this app. </noscript>
     <!-- The root element for your Expo app. -->
     <div id="root"><div id="mg-boot-shell" aria-live="polite"><b>明鏡</b><span>명경을 불러오는 중…</span><noscript>JavaScript 를 켜 주세요.</noscript></div></div>
-  <script src="/myeonggyeong-web/_expo/static/js/web/entry-8606584dec7bb336775c45c983c3fc64.js" defer></script>
+  <script src="/_expo/static/js/web/entry-539c82f07643da50aa039b6deb36e595.js" defer></script>
 </body>
 </html>
